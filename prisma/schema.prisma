@@ -1,17 +1,29 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
     provider = "prisma-client-js"
 }
 
 datasource db {
-    provider = "sqlite"
-    url      = env("DATABASE_URL")
+    provider     = "mysql"
+    url          = env("DATABASE_URL")
+    relationMode = "prisma"
 }
 
-model Example {
-    id        String   @id @default(cuid())
+model Player {
+    id        Int     @id @default(autoincrement())
+    name      String?
+    GamesWon  Game[]  @relation("winner")
+    GamesLost Game[]  @relation("loser")
+}
+
+model Game {
+    id        Int      @id @default(autoincrement())
     createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    score     String
+    Winner    Player?  @relation(name: "winner", fields: [winnerId], references: [id])
+    winnerId  Int?
+    Loser     Player?  @relation(name: "loser", fields: [loserId], references: [id])
+    loserId   Int?
+
+    @@index([winnerId])
+    @@index([loserId])
 }
