@@ -17,13 +17,14 @@ model Player {
 }
 
 model Game {
-    id        Int      @id @default(autoincrement())
-    createdAt DateTime @default(now())
-    score     String
-    Winner    Player?  @relation(name: "winner", fields: [winnerId], references: [id])
-    winnerId  Int?
-    Loser     Player?  @relation(name: "loser", fields: [loserId], references: [id])
-    loserId   Int?
+    id          Int      @id @default(autoincrement())
+    createdAt   DateTime @default(now())
+    Winner      Player?  @relation(name: "winner", fields: [winnerId], references: [id])
+    winnerId    Int?
+    Loser       Player?  @relation(name: "loser", fields: [loserId], references: [id])
+    loserId     Int?
+    winnerScore Int
+    loserScore  Int
 
     @@index([winnerId])
     @@index([loserId])

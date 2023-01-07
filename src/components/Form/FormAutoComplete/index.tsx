@@ -29,7 +29,10 @@ interface FormAutoCompleteProps {
 // forward the ref to the underlying select element so that we can reference it in React Hook Form
 const FormAutoComplete = forwardRef<HTMLInputElement, FormAutoCompleteProps>(
   ({ options, label, name }, ref) => {
-    const [selectedOptions, setSelectedOptions] = useState<TOption[]>([]);
+    const [selectedOptions, setSelectedOptions] = useState<TOption>({
+      label: "",
+      value: 0,
+    });
     const [filter, setFilter] = useState("");
     const autoCompleteId = useId();
     const {
@@ -68,7 +71,7 @@ const FormAutoComplete = forwardRef<HTMLInputElement, FormAutoCompleteProps>(
 
     // use debounce to prevent the search from happening on every keystroke, because the operation is very expensive
     const debouncedChangeHandler = useCallback(
-      debounce(queryChangeHandler, 1000),
+      debounce(queryChangeHandler, 200),
       []
     );
 
@@ -86,14 +89,13 @@ const FormAutoComplete = forwardRef<HTMLInputElement, FormAutoCompleteProps>(
             refName={field.name}
             value={selectedOptions}
             as="div"
-            multiple
           >
             <Typography
               variant="base"
               component="label"
               htmlFor={autoCompleteId}
               className={classNames(
-                errorMessage ? "text-red-500/80" : "text-gray-700",
+                errorMessage ? "text-red-500/80" : "text-gray-100",
                 "font-bold"
               )}
             >
@@ -101,31 +103,29 @@ const FormAutoComplete = forwardRef<HTMLInputElement, FormAutoCompleteProps>(
             </Typography>
             <div
               className={classNames(
-                "flex w-full rounded-sm border bg-white text-base text-gray-900 outline-none duration-150 placeholder:text-gray-600 hover:ring-1 focus:shadow-sm focus:ring-1 active:shadow-sm",
+                "flex w-full rounded-lg bg-white bg-opacity-20 py-2 px-3 text-base text-gray-100 outline-none duration-150 placeholder:text-gray-300 hover:ring-1 focus:shadow-sm focus:ring-2  active:shadow-sm active:ring-2 ",
                 errorMessage
-                  ? "border-red-500/80  !text-red-500/80 hover:ring-red-500/80  focus:ring-red-500/80 active:focus:ring-red-500/80"
-                  : "border-gray-700  hover:ring-gray-800  focus:ring-gray-800  active:ring-gray-800"
+                  ? "border-red-500/80  !text-red-500/80 hover:ring-red-500/50  focus:ring-red-500/80 active:focus:ring-red-500/80"
+                  : " hover:ring-gray-100 focus:ring-gray-100 active:ring-gray-100"
               )}
             >
               <Combobox.Input
                 id={autoCompleteId}
                 placeholder="Type hier om te zoeken"
                 className={classNames(
-                  errorMessage ? "text-red-500/80" : "text-gray-700",
-                  "w-full bg-transparent py-2 px-3 text-gray-700 outline-none placeholder:text-gray-600"
+                  "w-full rounded-lg bg-transparent text-base text-gray-100 outline-none duration-150 placeholder:text-gray-300 ",
+                  errorMessage
+                    ? "border-red-500/80  !text-red-500/80 hover:ring-red-500/50  focus:ring-red-500/80 active:focus:ring-red-500/80"
+                    : " hover:ring-gray-100 focus:ring-gray-100 active:ring-gray-100"
                 )}
-                displayValue={() =>
-                  selectedOptions
-                    ?.map((option: TOption) => option.label)
-                    .join(", ")
-                }
+                displayValue={() => selectedOptions.label}
                 onChange={debouncedChangeHandler}
               />
               <Combobox.Button className="flex items-center bg-transparent">
                 <ChevronUpDownIcon
                   className={classNames(
-                    errorMessage ? "text-red-500/80" : "text-gray-700",
-                    "mr-2 h-5 w-5"
+                    errorMessage ? "text-red-500/80" : "text-gray-300",
+                    "h-5 w-5"
                   )}
                   aria-hidden="true"
                 />
@@ -138,7 +138,7 @@ const FormAutoComplete = forwardRef<HTMLInputElement, FormAutoCompleteProps>(
               leaveTo="opacity-0"
               afterLeave={() => setFilter("")}
             >
-              <Combobox.Options className="no-scrollbar absolute z-50 mt-1 max-h-60 w-[436px] overflow-auto rounded-sm border border-gray-800 bg-white py-1 text-sm shadow-sm ring-1 ring-gray-900 ring-opacity-5 focus:outline-none sm:w-full sm:max-w-[42.9rem] md:w-[331px] lg:w-[436px]">
+              <Combobox.Options className="no-scrollbar absolute z-50 mt-1 max-h-60 w-full max-w-xs overflow-auto rounded-lg bg-gray-100 py-1 text-sm shadow-sm ring-1 ring-gray-900 ring-opacity-5 focus:outline-none sm:w-full lg:max-w-sm xl:max-w-md ">
                 {filteredOptions?.length === 0 && filter !== "" && (
                   <Typography
                     className="cursor-default select-none py-1 pl-3 text-sm text-gray-900"
@@ -152,7 +152,7 @@ const FormAutoComplete = forwardRef<HTMLInputElement, FormAutoCompleteProps>(
                     key={option.label}
                     className={({ active }) =>
                       classNames(
-                        active ? "bg-gray-400 " : "text-gray-700",
+                        active ? "bg-gray-900 bg-opacity-20 " : "text-gray-900",
                         "relative cursor-default select-none py-2 pl-10 pr-4"
                       )
                     }
@@ -173,7 +173,9 @@ const FormAutoComplete = forwardRef<HTMLInputElement, FormAutoCompleteProps>(
                         {selected && (
                           <Typography
                             className={classNames(
-                              active ? "text-gray-900" : "text-orange-500",
+                              active
+                                ? "text-gray-900"
+                                : "text-[hsl(280,100%,70%)]",
                               "absolute inset-y-0 left-0 flex items-center pl-3"
                             )}
                           >

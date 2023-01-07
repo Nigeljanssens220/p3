@@ -18,12 +18,11 @@ const FormAddPlayer: React.FC = ({}) => {
   const utils = api.useContext();
 
   const createPlayerHandler = async (data: PlayerCreateInput) => {
-    const results = await createPlayer.mutateAsync(data, {
+    await createPlayer.mutateAsync(data, {
       onSuccess: () => {
         utils.player.getAll.invalidate();
       },
     });
-    console.log(results);
     methods.reset();
   };
 

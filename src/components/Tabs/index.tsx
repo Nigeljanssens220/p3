@@ -29,7 +29,7 @@ const Tabs: React.FC = () => {
     <TabsPrimitive.Root className="flex w-full flex-col items-center">
       <TabsPrimitive.List
         className={classNames(
-          "mb-2 flex h-full w-full justify-evenly rounded-lg bg-[hsl(280,100%,60%)] py-4 px-1 md:max-w-sm"
+          "mb-2 flex h-full justify-evenly space-x-1 rounded-lg bg-[hsl(280,100%,60%)] py-4 px-1 md:max-w-sm"
         )}
       >
         {tabs.map(({ title, value }) => (
@@ -53,7 +53,7 @@ const Tabs: React.FC = () => {
           key={`tab-content-${value}`}
           value={value}
           className={
-            "h-full w-full max-w-sm rounded-lg bg-white bg-opacity-10 bg-clip-padding p-4 backdrop-blur-3xl backdrop-filter"
+            "h-full w-full max-w-screen-xl rounded-lg bg-white bg-opacity-10 bg-clip-padding p-4 backdrop-blur-3xl backdrop-filter"
           }
         >
           <Invoer />
