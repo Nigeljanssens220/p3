@@ -48,7 +48,7 @@ const FormAddPlayer: React.FC = ({}) => {
           placeholder="420@blazeit.com"
         />
         <Button variant="primary" type="submit" className="col-span-2">
-          Zoeken
+          Toevoegen
         </Button>
       </form>
     </FormProvider>

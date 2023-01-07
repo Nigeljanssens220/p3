@@ -64,7 +64,7 @@ const FormAddGame: React.FC = ({}) => {
         )}
 
         <Button variant="primary" type="submit" className="col-span-2">
-          Zoeken
+          Toevoegen
         </Button>
       </form>
     </FormProvider>
