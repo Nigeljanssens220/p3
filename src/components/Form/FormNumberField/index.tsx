@@ -39,7 +39,7 @@ const FormNumberField: React.FC<FormNumberFieldProps> = ({
   }, [name, unregister]);
 
   return (
-    <div className="flex flex-col items-start">
+    <div className="flex w-full flex-col items-start">
       <Typography
         variant="base"
         component="label"
@@ -56,12 +56,13 @@ const FormNumberField: React.FC<FormNumberFieldProps> = ({
         {...rest}
         id={id + numberFieldId}
         type="number"
+        defaultValue={0}
         placeholder={placeholder}
         className={classNames(
           className,
           "w-full rounded-lg bg-white bg-opacity-20 py-2 px-3 text-base text-gray-100 outline-none duration-150 placeholder:text-gray-300 hover:ring-1 focus:shadow-sm focus:ring-2  active:shadow-sm active:ring-2 ",
           errorMessage
-            ? "border-red-500/80  !text-red-500/80 hover:ring-red-500/50  focus:ring-red-500/80 active:focus:ring-red-500/80"
+            ? "border border-red-500/80  !text-red-500/80 hover:ring-red-500/50  focus:ring-red-500/80 active:focus:ring-red-500/80"
             : " hover:ring-gray-100 focus:ring-gray-100 active:ring-gray-100"
         )}
         value={value}

@@ -108,7 +108,7 @@ const FormAutoComplete = forwardRef<HTMLInputElement, FormAutoCompleteProps>(
               className={classNames(
                 "flex w-full rounded-lg bg-white bg-opacity-20 py-2 px-3 text-base text-gray-100 outline-none duration-150 placeholder:text-gray-300 hover:ring-1 focus:shadow-sm focus:ring-2  active:shadow-sm active:ring-2 ",
                 errorMessage
-                  ? "border-red-500/80  !text-red-500/80 hover:ring-red-500/50  focus:ring-red-500/80 active:focus:ring-red-500/80"
+                  ? "border border-red-500/80  !text-red-500/80 hover:ring-red-500/50  focus:ring-red-500/80 active:focus:ring-red-500/80"
                   : " hover:ring-gray-100 focus:ring-gray-100 active:ring-gray-100"
               )}
             >
@@ -134,6 +134,11 @@ const FormAutoComplete = forwardRef<HTMLInputElement, FormAutoCompleteProps>(
                 />
               </Combobox.Button>
             </div>
+            {errorMessage ? (
+              <Typography className="m-1 !text-red-500/80">
+                {errorMessage}
+              </Typography>
+            ) : null}
             <Transition
               as={Fragment}
               leave="transition ease-in duration-100"

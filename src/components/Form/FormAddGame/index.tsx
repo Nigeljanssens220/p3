@@ -1,8 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Ring } from "@uiball/loaders";
-import debounce from "lodash.debounce";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { gameCreateSchema } from "../../../server/api/schemas/game";
 import type { RouterInputs } from "../../../utils/api";
@@ -11,7 +10,7 @@ import classNames from "../../../utils/styling";
 import Button from "../../Button";
 import Typography from "../../Typography";
 import FormAutoComplete from "../FormAutoComplete";
-import { TOption } from "../FormListBox";
+import type { TOption } from "../FormListBox";
 import FormNumberField from "../FormNumberField";
 
 type GameCreateInput = RouterInputs["game"]["create"];
@@ -45,14 +44,12 @@ const FormAddGame: React.FC<Props> = ({ className }) => {
     methods.reset();
   };
 
-  // use debounce to prevent the search from happening on every keystroke, because the operation is very expensive
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedHandler = useCallback(debounce(createGameHandler, 10000), []);
+  const errorMessage = methods.formState.errors;
 
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={methods.handleSubmit(debouncedHandler)}
+        onSubmit={methods.handleSubmit(createGameHandler)}
         className={classNames(
           className,
           "flex flex-col justify-center space-y-4 rounded-lg bg-gray-100 bg-opacity-25 bg-clip-padding p-4 backdrop-blur-3xl backdrop-filter"
@@ -63,19 +60,36 @@ const FormAddGame: React.FC<Props> = ({ className }) => {
         </Typography>
         <FormAutoComplete
           options={allPlayersOptions}
-          name="winner-player"
+          name="winnerId"
           label="Winner"
         />
         <FormAutoComplete
           options={allPlayersOptions}
-          name="loser-player"
+          name="loserId"
           label="Loser"
         />
         <div className="flex items-center justify-evenly">
-          <FormNumberField name="winner-score" label="Winner Score" />
-          <Typography className="mt-5 px-4 text-gray-100 lg:px-0">-</Typography>
-          <FormNumberField name="loser-score" label="Loser Score" />
+          <FormNumberField
+            name="winnerScore"
+            label="Winner Score"
+            min={0}
+            max={99}
+          />
+          <Typography className="mt-5 px-4 text-gray-100 lg:px-10">
+            -
+          </Typography>
+          <FormNumberField
+            name="loserScore"
+            label="Loser Score"
+            min={0}
+            max={99}
+          />
         </div>
+        {!!errorMessage && Object.values(errorMessage).length > 0 && (
+          <Typography className="border-red-500/80  !text-red-500/80 hover:ring-red-500/50  focus:ring-red-500/80 active:focus:ring-red-500/80">
+            {/* {JSON.stringify(errorMessage)} */}
+          </Typography>
+        )}
         <Button variant="primary" type="submit" className="col-span-2 w-full">
           {createGame.isLoading ? (
             <Ring size={20} lineWeight={5} speed={2} color="white" />

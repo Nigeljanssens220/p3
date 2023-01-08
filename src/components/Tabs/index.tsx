@@ -2,6 +2,7 @@ import * as TabsPrimitive from "@radix-ui/react-tabs";
 import React from "react";
 import classNames from "../../utils/styling";
 import Invoer from "./Panels/Invoer";
+import Wedstrijden from "./Panels/Wedstrijden";
 
 interface Tab {
   title: string;
@@ -23,6 +24,12 @@ const tabs: Tab[] = [
     value: "tab3",
   },
 ];
+
+const PanelMap = new Map<string, React.FC>([
+  ["tab1", () => <div>Tab 1</div>],
+  ["tab2", () => <Wedstrijden />],
+  ["tab3", () => <Invoer />],
+]);
 
 const Tabs: React.FC = () => {
   return (
@@ -56,7 +63,13 @@ const Tabs: React.FC = () => {
             "h-full w-full max-w-screen-xl rounded-lg bg-white bg-opacity-10 bg-clip-padding p-4 backdrop-blur-3xl backdrop-filter"
           }
         >
-          <Invoer />
+          {
+            {
+              tab1: "Your inbox is empty",
+              tab2: <Wedstrijden />,
+              tab3: <Invoer />,
+            }[value]
+          }
         </TabsPrimitive.Content>
       ))}
     </TabsPrimitive.Root>

@@ -1,7 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Ring } from "@uiball/loaders";
-import debounce from "lodash.debounce";
-import { useCallback } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 import { playerCreateSchema } from "../../../server/api/schemas/player";
 import type { RouterInputs } from "../../../utils/api";
@@ -32,17 +30,11 @@ const FormAddPlayer: React.FC<Props> = ({ className }) => {
     });
     methods.reset();
   };
-  // use debounce to prevent the search from happening on every keystroke, because the operation is very expensive
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const debouncedHandler = useCallback(
-    debounce(createPlayerHandler, 10000),
-    []
-  );
 
   return (
     <FormProvider {...methods}>
       <form
-        onSubmit={methods.handleSubmit(debouncedHandler)}
+        onSubmit={methods.handleSubmit(createPlayerHandler)}
         className={classNames(
           className,
           "flex flex-col justify-center space-y-4 rounded-lg bg-gray-100 bg-opacity-25 bg-clip-padding p-4 backdrop-blur-3xl backdrop-filter"

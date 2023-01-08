@@ -11,7 +11,7 @@ datasource db {
 model Player {
     id        Int    @id @default(autoincrement())
     name      String
-    email     String
+    email     String @unique
     GamesWon  Game[] @relation("winner")
     GamesLost Game[] @relation("loser")
 }

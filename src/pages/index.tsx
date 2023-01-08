@@ -1,12 +1,8 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Tabs from "../components/Tabs";
-import prefetchAllPlayers from "../hooks/useAllPlayers";
 
 const Home: NextPage = () => {
-  // This helper function prefetches all players, so that when we actually need them we don't have to wait for the API to respond
-  prefetchAllPlayers();
-
   return (
     <>
       <Head>
