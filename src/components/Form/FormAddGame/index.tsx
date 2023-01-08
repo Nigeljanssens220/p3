@@ -10,7 +10,9 @@ import { api } from "../../../utils/api";
 import classNames from "../../../utils/styling";
 import Button from "../../Button";
 import Typography from "../../Typography";
-import FormAutoComplete, { TOption } from "../FormAutoComplete";
+import FormAutoComplete from "../FormAutoComplete";
+import { TOption } from "../FormListBox";
+import FormNumberField from "../FormNumberField";
 
 type GameCreateInput = RouterInputs["game"]["create"];
 type Props = {
@@ -69,7 +71,12 @@ const FormAddGame: React.FC<Props> = ({ className }) => {
           name="loser-player"
           label="Loser"
         />
-        <Button variant="primary" type="submit" className="col-span-2">
+        <div className="flex items-center justify-evenly">
+          <FormNumberField name="winner-score" label="Winner Score" />
+          <Typography className="mt-5 px-4 text-gray-100 lg:px-0">-</Typography>
+          <FormNumberField name="loser-score" label="Loser Score" />
+        </div>
+        <Button variant="primary" type="submit" className="col-span-2 w-full">
           {createGame.isLoading ? (
             <Ring size={20} lineWeight={5} speed={2} color="white" />
           ) : (
