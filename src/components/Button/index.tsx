@@ -39,7 +39,11 @@ const Button: React.FC<ButtonProps> = ({
     <button
       id={id + buttonId}
       {...rest}
-      className={classNames(className, buttonMap.get(variant))}
+      className={classNames(
+        className,
+        buttonMap.get(variant),
+        "flex items-center justify-center text-center"
+      )}
     >
       {startIcon && startIcon}
       {children}

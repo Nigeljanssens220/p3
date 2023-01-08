@@ -51,6 +51,9 @@ const FormAutoComplete = forwardRef<HTMLInputElement, FormAutoCompleteProps>(
     }, [name, unregister]);
 
     const filteredOptions = useMemo(() => {
+      if (!options) {
+        return [{ label: "Geen opties gevonden", value: 0 }];
+      }
       const newOptions =
         filter === ""
           ? options

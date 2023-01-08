@@ -4,8 +4,9 @@ import FormAddPlayer from "../../Form/FormAddPlayer";
 const Invoer: React.FC = ({}) => {
   return (
     <section className="grid gap-4 lg:grid-cols-2">
-      <FormAddGame />
+      <FormAddGame className="hidden lg:block" />
       <FormAddPlayer />
+      <FormAddGame className="lg:hidden" />
     </section>
   );
 };
