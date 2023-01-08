@@ -25,7 +25,12 @@ const FormAddGame: React.FC<Props> = ({ className }) => {
   const createGame = api.game.create.useMutation();
   const utils = api.useContext();
 
-  const allPlayers = api.player.getAll.useQuery().data;
+  const allPlayers = api.player.getAll.useQuery(undefined, {
+    refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+    refetchInterval: 0,
+  }).data;
   const allPlayersOptions = useMemo(
     () =>
       allPlayers?.map((player) => ({
