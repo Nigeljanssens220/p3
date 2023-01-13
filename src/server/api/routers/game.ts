@@ -11,7 +11,7 @@ export const gameRouter = createTRPCRouter({
     .input(unrankedGameCreateSchema)
     .mutation(async ({ input, ctx }) => {
       // if not a ranked game, just create the game. Default is false
-      ctx.prisma.game.create({
+      return await ctx.prisma.game.create({
         data: {
           winnerId: input.winnerId.value,
           loserId: input.loserId.value,
@@ -80,7 +80,7 @@ export const gameRouter = createTRPCRouter({
       });
 
       // create the ranked game
-      await ctx.prisma.game.create({
+      return await ctx.prisma.game.create({
         data: {
           ranked: true,
           winnerId: input.winnerId.value,
@@ -90,8 +90,8 @@ export const gameRouter = createTRPCRouter({
         },
       });
     }),
-  getAll: publicProcedure.query(({ ctx }) => {
-    return ctx.prisma.game.findMany({
+  getAll: publicProcedure.query(async ({ ctx }) => {
+    return await ctx.prisma.game.findMany({
       include: {
         Winner: true,
         Loser: true,
