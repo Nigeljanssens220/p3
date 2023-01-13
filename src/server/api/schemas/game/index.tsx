@@ -2,6 +2,7 @@ import { z } from "zod";
 
 export const gameCreateSchema = z
   .object({
+    ranked: z.boolean().default(false),
     winnerId: z.object(
       {
         value: z.number(),

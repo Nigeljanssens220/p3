@@ -14,6 +14,7 @@ model Player {
     email     String @unique
     GamesWon  Game[] @relation("winner")
     GamesLost Game[] @relation("loser")
+    eloRating Int    @default(1000)
 }
 
 model Game {
@@ -25,6 +26,7 @@ model Game {
     loserId     Int?
     winnerScore Int
     loserScore  Int
+    ranked      Boolean  @default(false)
 
     @@index([winnerId])
     @@index([loserId])
