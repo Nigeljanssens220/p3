@@ -3,7 +3,7 @@ import { api } from "../../../utils/api";
 import GameCard from "../../GameCard";
 import { GameWithPlayers } from "../../types/game";
 
-const Wedstrijden: React.FC = ({}) => {
+const Games: React.FC = ({}) => {
   const { data, isLoading, isError, error } = api.game.getAll.useQuery();
 
   return (
@@ -20,4 +20,4 @@ const Wedstrijden: React.FC = ({}) => {
   );
 };
 
-export default Wedstrijden;
+export default Games;
