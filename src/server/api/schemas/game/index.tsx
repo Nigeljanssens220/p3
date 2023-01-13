@@ -1,8 +1,7 @@
 import { z } from "zod";
 
-export const gameCreateSchema = z
+export const unrankedGameCreateSchema = z
   .object({
-    ranked: z.boolean().default(false),
     winnerId: z.object(
       {
         value: z.number(),
@@ -41,3 +40,10 @@ export const gameCreateSchema = z
       message: "Winner score must be higher than loser score",
     }
   );
+
+const rankedSchema = z.object({
+  ranked: z.boolean().default(true),
+});
+
+export const rankedGameCreateSchema =
+  unrankedGameCreateSchema.and(rankedSchema);

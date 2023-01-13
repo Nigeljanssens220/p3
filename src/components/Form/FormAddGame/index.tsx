@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Ring } from "@uiball/loaders";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
-import { gameCreateSchema } from "../../../server/api/schemas/game";
+import { unrankedGameCreateSchema } from "../../../server/api/schemas/game";
 import type { RouterInputs } from "../../../utils/api";
 import { api } from "../../../utils/api";
 import classNames from "../../../utils/styling";
@@ -12,17 +12,21 @@ import Typography from "../../Typography";
 import FormAutoComplete from "../FormAutoComplete";
 import type { TOption } from "../FormListBox";
 import FormNumberField from "../FormNumberField";
+import FormToggle from "../FormToggle";
 
-type GameCreateInput = RouterInputs["game"]["create"];
+type GameCreateInput = RouterInputs["game"]["createUnranked"];
 type Props = {
   className?: string;
 };
 
 const FormAddGame: React.FC<Props> = ({ className }) => {
+  const [isRanked, setIsRanked] = useState(false);
   const methods = useForm<GameCreateInput>({
-    resolver: zodResolver(gameCreateSchema),
+    resolver: zodResolver(unrankedGameCreateSchema),
   });
-  const createGame = api.game.create.useMutation();
+  const createUnrankedGame = api.game.createUnranked.useMutation();
+  const createRankedGame = api.game.createRanked.useMutation();
+
   const utils = api.useContext();
 
   const allPlayers = api.player.getAll.useQuery(undefined, {
@@ -41,11 +45,20 @@ const FormAddGame: React.FC<Props> = ({ className }) => {
   );
 
   const createGameHandler = async (data: GameCreateInput) => {
-    await createGame.mutateAsync(data, {
-      onSuccess: () => {
-        utils.game.getAll.invalidate();
-      },
-    });
+    if (isRanked) {
+      await createRankedGame.mutateAsync(data, {
+        onSuccess: () => {
+          utils.game.getAll.invalidate();
+        },
+      });
+    } else {
+      await createUnrankedGame.mutateAsync(data, {
+        onSuccess: () => {
+          utils.game.getAll.invalidate();
+        },
+      });
+    }
+
     methods.reset();
   };
 
@@ -90,13 +103,17 @@ const FormAddGame: React.FC<Props> = ({ className }) => {
             max={99}
           />
         </div>
+        <FormToggle
+          label="Ranked"
+          onChange={() => setIsRanked((prev) => !prev)}
+        />
         {!!errorMessage && Object.values(errorMessage).length > 0 && (
           <Typography className="border-red-500/80  !text-red-500/80 hover:ring-red-500/50  focus:ring-red-500/80 active:focus:ring-red-500/80">
             {/* {JSON.stringify(errorMessage)} */}
           </Typography>
         )}
         <Button variant="primary" type="submit" className="col-span-2 w-full">
-          {createGame.isLoading ? (
+          {createUnrankedGame.isLoading || createRankedGame.isLoading ? (
             <Ring size={20} lineWeight={5} speed={2} color="white" />
           ) : (
             "Toevoegen"
