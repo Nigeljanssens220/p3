@@ -20,6 +20,9 @@ export const gameRouter = createTRPCRouter({
         Winner: true,
         Loser: true,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
   }),
 });
