@@ -25,6 +25,9 @@ const GameCard: React.FC<Props> = ({ data }) => {
       <Typography className="rounded-lg bg-white bg-opacity-20 py-2 px-4 font-semibold">
         {data.winnerScore + "-" + data.loserScore}
       </Typography>
+      <Typography className="rounded-lg bg-white bg-opacity-20 py-2 px-4 font-semibold">
+        {data.ranked ? "Ranked" : "Friendly"}
+      </Typography>
       <div className="flex items-center justify-center rounded-lg bg-white bg-opacity-20 px-4 py-2">
         <CalendarIcon className="mr-2 h-5 w-5" />
         <Typography>{f.format(data.createdAt)}</Typography>

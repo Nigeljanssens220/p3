@@ -1,24 +1,28 @@
 import EloRank from "elo-rank";
-import { gameCreateSchema } from "../schemas/game";
+import {
+  rankedGameCreateSchema,
+  unrankedGameCreateSchema,
+} from "../schemas/game";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
 export const gameRouter = createTRPCRouter({
-  create: publicProcedure
-    .input(gameCreateSchema)
+  createUnranked: publicProcedure
+    .input(unrankedGameCreateSchema)
     .mutation(async ({ input, ctx }) => {
       // if not a ranked game, just create the game. Default is false
-      if (!input.ranked) {
-        ctx.prisma.game.create({
-          data: {
-            winnerId: input.winnerId.value,
-            loserId: input.loserId.value,
-            winnerScore: parseInt(input.winnerScore),
-            loserScore: parseInt(input.loserScore),
-          },
-        });
-      }
-
+      ctx.prisma.game.create({
+        data: {
+          winnerId: input.winnerId.value,
+          loserId: input.loserId.value,
+          winnerScore: parseInt(input.winnerScore),
+          loserScore: parseInt(input.loserScore),
+        },
+      });
+    }),
+  createRanked: publicProcedure
+    .input(rankedGameCreateSchema)
+    .mutation(async ({ input, ctx }) => {
       // Get players
       const playerA = await ctx.prisma?.player.findUnique({
         where: {
@@ -72,6 +76,17 @@ export const gameRouter = createTRPCRouter({
         },
         data: {
           eloRating: newPlayerB,
+        },
+      });
+
+      // create the ranked game
+      await ctx.prisma.game.create({
+        data: {
+          ranked: true,
+          winnerId: input.winnerId.value,
+          loserId: input.loserId.value,
+          winnerScore: parseInt(input.winnerScore),
+          loserScore: parseInt(input.loserScore),
         },
       });
     }),
