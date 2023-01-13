@@ -6,8 +6,6 @@ import { GameWithPlayers } from "../../types/game";
 const Wedstrijden: React.FC = ({}) => {
   const { data, isLoading, isError, error } = api.game.getAll.useQuery();
 
-  console.log(playerA, playerB);
-
   return (
     <section className="grid w-full gap-4 text-gray-100 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {isLoading && (
