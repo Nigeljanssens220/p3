@@ -1,74 +1,57 @@
 import * as TabsPrimitive from "@radix-ui/react-tabs";
-import React from "react";
+import { forwardRef } from "react";
 import classNames from "../../utils/styling";
-import { default as Games } from "./Panels/Games";
-import { default as Input } from "./Panels/Input";
-import PlayerScores from "./Panels/PlayerScores";
 
-interface Tab {
-  title: string;
-  value: string;
-}
+const Tabs = TabsPrimitive.Root;
 
-const tabs: Tab[] = [
-  {
-    title: "Stand",
-    value: "tab1",
-  },
-  {
-    title: "Wedstrijden",
-    value: "tab2",
-  },
+const TabsList = forwardRef<
+  React.ElementRef<typeof TabsPrimitive.List>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.List
+    ref={ref}
+    className={classNames(
+      className,
+      "mb-2 flex h-full justify-evenly space-x-1 rounded-lg bg-[hsl(280,100%,60%)] py-4 px-1 md:max-w-sm"
+    )}
+    {...props}
+  />
+));
+TabsList.displayName = TabsPrimitive.List.displayName;
 
-  {
-    title: "Invoer",
-    value: "tab3",
-  },
-];
+const TabsTrigger = forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Trigger>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
+>(({ className, children, ...props }, ref) => (
+  <TabsPrimitive.Trigger
+    ref={ref}
+    {...props}
+    className={classNames("", className)}
+  >
+    <span
+      className={classNames(
+        "text-md rounded-lg bg-[hsl(280,100%,70%)] p-4 font-semibold hover:bg-gray-200/50 dark:text-gray-100"
+      )}
+    >
+      {children}
+    </span>
+  </TabsPrimitive.Trigger>
+));
+TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
-const Tabs: React.FC = () => {
-  return (
-    <TabsPrimitive.Root className="flex w-full flex-col items-center">
-      <TabsPrimitive.List
-        className={classNames(
-          "mb-2 flex h-full justify-evenly space-x-1 rounded-lg bg-[hsl(280,100%,60%)] py-4 px-1 md:max-w-sm"
-        )}
-      >
-        {tabs.map(({ title, value }) => (
-          <TabsPrimitive.Trigger
-            key={`tab-trigger-${value}`}
-            value={value}
-            className=""
-          >
-            <span
-              className={classNames(
-                "text-md rounded-lg bg-[hsl(280,100%,70%)] p-4 font-semibold hover:bg-gray-200/50 dark:text-gray-100"
-              )}
-            >
-              {title}
-            </span>
-          </TabsPrimitive.Trigger>
-        ))}
-      </TabsPrimitive.List>
-      {tabs.map(({ value }) => (
-        <TabsPrimitive.Content
-          key={`tab-content-${value}`}
-          value={value}
-          className={
-            "h-full w-full max-w-screen-xl rounded-lg bg-white bg-opacity-10 bg-clip-padding p-4 backdrop-blur-3xl backdrop-filter"
-          }
-        >
-          {
-            {
-              tab1: <PlayerScores />,
-              tab2: <Games />,
-              tab3: <Input />,
-            }[value]
-          }
-        </TabsPrimitive.Content>
-      ))}
-    </TabsPrimitive.Root>
-  );
-};
+const TabsContent = forwardRef<
+  React.ElementRef<typeof TabsPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
+>(({ className, ...props }, ref) => (
+  <TabsPrimitive.Content
+    className={classNames(
+      "mt-2 rounded-md border border-slate-200 p-6 dark:border-slate-700",
+      className
+    )}
+    {...props}
+    ref={ref}
+  />
+));
+TabsContent.displayName = TabsPrimitive.Content.displayName;
 
-export default Tabs;
+export { Tabs, TabsList, TabsTrigger, TabsContent };

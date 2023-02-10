@@ -86,23 +86,18 @@ const FormAddGame: React.FC<Props> = ({ className }) => {
           name="loserId"
           label="Loser"
         />
-        <div className="flex items-center justify-evenly">
-          <FormNumberField
-            name="winnerScore"
-            label="Winner Score"
-            min={0}
-            max={99}
-          />
-          <Typography className="mt-5 px-4 text-gray-100 lg:px-10">
-            -
-          </Typography>
-          <FormNumberField
-            name="loserScore"
-            label="Loser Score"
-            min={0}
-            max={99}
-          />
-        </div>
+        <FormNumberField
+          name="winnerScore"
+          label="Winner Score"
+          min={0}
+          max={99}
+        />
+        <FormNumberField
+          name="loserScore"
+          label="Loser Score"
+          min={0}
+          max={99}
+        />
         <FormToggle
           label="Ranked"
           onChange={() => setIsRanked((prev) => !prev)}

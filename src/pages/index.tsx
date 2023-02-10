@@ -1,6 +1,9 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import Tabs from "../components/Tabs";
+import { Tabs, TabsList, TabsTrigger } from "../components/Tabs";
+import Games from "../components/Tabs/Panels/Games";
+import Input from "../components/Tabs/Panels/Input";
+import PlayerScores from "../components/Tabs/Panels/PlayerScores";
 
 const Home: NextPage = () => {
   return (
@@ -15,7 +18,19 @@ const Home: NextPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Ping <span className="text-[hsl(280,100%,70%)]">Pong</span> Poule
           </h1>
-          <Tabs />
+          <Tabs
+            defaultValue="playerScore"
+            className="flex w-full flex-col items-center"
+          >
+            <TabsList>
+              <TabsTrigger value="playerScore">Player Score</TabsTrigger>
+              <TabsTrigger value="games">Games</TabsTrigger>
+              <TabsTrigger value="input">Input</TabsTrigger>
+            </TabsList>
+            <PlayerScores />
+            <Games />
+            <Input />
+          </Tabs>
         </div>
       </main>
     </>
