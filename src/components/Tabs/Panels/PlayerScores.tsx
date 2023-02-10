@@ -1,15 +1,21 @@
 import { FaceFrownIcon, FaceSmileIcon } from "@heroicons/react/20/solid";
+import { DotSpinner } from "@uiball/loaders";
 import { TabsContent } from "..";
 import { api } from "../../../utils/api";
 import classNames from "../../../utils/styling";
 import Typography from "../../Typography";
 
 const PlayerScores: React.FC = ({}) => {
-  const allPlayers = api.player.getAll.useQuery().data;
+  const { data: allPlayers, isLoading } = api.player.getAll.useQuery();
 
   return (
     <TabsContent value="playerScore" className="max-w-sm">
       <section className=" flex w-full max-w-sm flex-col gap-4 space-y-2 rounded-lg bg-gray-100 bg-opacity-25 bg-clip-padding p-4 px-20 text-gray-100 backdrop-blur-3xl backdrop-filter">
+        {isLoading && (
+          <div className="col-span-4 flex items-center justify-center">
+            <DotSpinner color="white" />
+          </div>
+        )}
         <ul className="list-decimal divide-y">
           {allPlayers &&
             allPlayers.map((player, idx) => {
